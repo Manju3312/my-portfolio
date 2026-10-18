@@ -7,9 +7,15 @@ export default defineConfig({
     target: 'esnext',
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          animation: ['gsap', 'framer-motion', 'lenis'],
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom')) {
+              return 'vendor'
+            }
+            if (id.includes('gsap') || id.includes('framer-motion') || id.includes('lenis')) {
+              return 'animation'
+            }
+          }
         },
       },
     },
